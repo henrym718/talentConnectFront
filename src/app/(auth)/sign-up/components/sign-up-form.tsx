@@ -4,59 +4,72 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createAuthClient } from 'better-auth/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Loader2, OctagonAlertIcon } from 'lucide-react';
+import { OctagonAlertIcon } from 'lucide-react';
+import { FaGoogle } from 'react-icons/fa';
+import { signIn, signUp } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 
-const formSchema = z.object({
+const signUpSchema = z.object({
+  name: z.string().min(2, { message: 'Nombre muy corto' }),
   email: z.string().email({ message: 'Correo inválido' }),
   password: z.string().min(8, { message: 'Mínimo 6 caracteres' }),
 });
 
-const authClient = createAuthClient();
+export function SignUpForm() {
+  const [errorMessage, setErrorMessage] = useState<null | string>(null);
+  const [disabledButtons, setDisabledButtons] = useState<boolean>(false);
 
-export function SingUpForm() {
-  const [serverError, setServerError] = useState('');
+  const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const singUpForm = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
   });
 
-  const handleOnSubmitCredentials = form.handleSubmit(async (data) => {
-    await authClient.signUp.email(
+  const handleSignUp = async (formData: z.infer<typeof signUpSchema>) => {
+    setErrorMessage(null);
+    setDisabledButtons(true);
+    await signUp.email(
       {
-        email: data.email,
-        password: data.password,
-        name: 'henry',
-        callbackURL: '/',
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
       },
       {
+        onSuccess() {
+          router.push('/');
+        },
         onError() {
-          setServerError('Credenciales ya existen');
+          setDisabledButtons(false);
+          setErrorMessage('Credenciales ya existen');
         },
       },
     );
-  });
+  };
 
-  const handleOnSubmitGoogle = async () => {
-    await authClient.signIn.social({
+  const handleGoogleSignUp = async () => {
+    setErrorMessage(null);
+    setDisabledButtons(true);
+    await signIn.social({
       provider: 'google',
+      callbackURL: '/',
     });
   };
 
   return (
     <Card className="overflow-hidden p-0">
       <CardContent className="grid p-0 md:grid-cols-2">
-        <Form {...form}>
-          <form onSubmit={handleOnSubmitCredentials} className="p-6 md:p-8 ">
+        <Form {...singUpForm}>
+          <form onSubmit={singUpForm.handleSubmit(handleSignUp)} className="p-6 md:p-8 ">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Bienvenido nuevamente</h1>
@@ -67,8 +80,23 @@ export function SingUpForm() {
 
               <div className="grid gap-2">
                 <FormField
+                  name="name"
+                  control={singUpForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="Joe Doe" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <FormField
                   name="email"
-                  control={form.control}
+                  control={singUpForm.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email</FormLabel>
@@ -83,7 +111,7 @@ export function SingUpForm() {
               <div className="grid gap-2">
                 <FormField
                   name="password"
-                  control={form.control}
+                  control={singUpForm.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
@@ -95,22 +123,15 @@ export function SingUpForm() {
                 />
               </div>
 
-              {serverError && (
+              {!!errorMessage && (
                 <Alert className="bg-destructive/10 border-none">
                   <OctagonAlertIcon className="size-4 !text-destructive" />
-                  <AlertTitle>{serverError}</AlertTitle>
+                  <AlertTitle>{errorMessage}</AlertTitle>
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full">
-                {form.formState.isSubmitting ? (
-                  <span className="flex items-center gap-4">
-                    Continuar
-                    <Loader2 className="size-4 animate-spin" />
-                  </span>
-                ) : (
-                  'Continuar'
-                )}
+              <Button type="submit" className="w-full" disabled={disabledButtons}>
+                Continuar
               </Button>
 
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:border-border after:border-t after:z-0">
@@ -123,9 +144,13 @@ export function SingUpForm() {
                 type="button"
                 className="w-full"
                 variant="outline"
-                onClick={handleOnSubmitGoogle}
+                onClick={handleGoogleSignUp}
+                disabled={disabledButtons}
               >
-                Google
+                <span className="flex items-center gap-2">
+                  <FaGoogle />
+                  Google
+                </span>
               </Button>
             </div>
           </form>
