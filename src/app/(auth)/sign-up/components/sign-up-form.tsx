@@ -11,7 +11,7 @@ import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { OctagonAlertIcon } from 'lucide-react';
 import { FaGoogle } from 'react-icons/fa';
-import { signIn, signUp } from '@/lib/auth';
+import { signIn, signUp } from '@/lib/authClient';
 import { useRouter } from 'next/navigation';
 
 const signUpSchema = z.object({

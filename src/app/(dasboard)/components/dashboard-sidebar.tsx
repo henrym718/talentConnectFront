@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import DashboardUserButton from './dashboard-user-button';
 
 const firstSection = [
   {
@@ -71,7 +72,7 @@ export function DashboardSidebar() {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      'h-10 border border-transparent hover:border-[#50b686]/10 hover:bg-gradient-to-r from-sidebar-accent/50 from-20% via-sidebar/50 via-90% to-sidebar/50',
+                      'h-10 border border-transparent hover:border-[#50b686]/10 hover:bg-linear-to-r from-sidebar-accent from-5% via-sidebar/50 via-30% to-sidebar/50',
                       pathName === item.href && 'bg-linear-to-r border-[#5D6B68]/10',
                     )}
                     isActive={pathName === item.href}
@@ -86,9 +87,39 @@ export function DashboardSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <div className="px-4 py-2">
+          <SidebarSeparator className="opacity-10 text-[#5D6B68]" />
+        </div>
+
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {secondSection.map((item) => (
+                <SidebarMenuItem key={item.label}>
+                  <SidebarMenuButton
+                    asChild
+                    className={cn(
+                      'h-10 border border-transparent hover:border-[#50b686]/10 hover:bg-linear-to-r from-sidebar-accent from-5% via-sidebar/50 via-30% to-sidebar/50',
+                      pathName === item.href && 'bg-linear-to-r border-[#5D6B68]/10',
+                    )}
+                    isActive={pathName === item.href}
+                  >
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label} </span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>Hola</SidebarFooter>
+      <SidebarFooter>
+        <DashboardUserButton />
+      </SidebarFooter>
     </Sidebar>
   );
 }
