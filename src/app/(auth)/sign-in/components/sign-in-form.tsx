@@ -147,7 +147,7 @@ export function SignInForm() {
           </form>
         </Form>
 
-        <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col">
+        <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col">
           col-2dsadas
         </div>
       </CardContent>

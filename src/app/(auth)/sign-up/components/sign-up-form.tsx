@@ -155,7 +155,7 @@ export function SignUpForm() {
             </div>
           </form>
         </Form>
-        <div className=" border-none bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col"></div>
+        <div className=" border-none bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col"></div>
       </CardContent>
     </Card>
   );
