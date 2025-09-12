@@ -1,5 +1,5 @@
-import { SignInForm } from './components/sign-in-form';
+import { SignInView } from '../../modules/auth/ui/views/sign-in-view';
 
 export default function SingInPage() {
-  return <SignInForm />;
+  return <SignInView />;
 }

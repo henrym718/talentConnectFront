@@ -1,5 +1,5 @@
-import { SignUpForm } from './components/sign-up-form';
+import { SignUpView } from '../../modules/auth/ui/views/sign-up-view';
 
 export default function SingUpPage() {
-  return <SignUpForm />;
+  return <SignUpView />;
 }

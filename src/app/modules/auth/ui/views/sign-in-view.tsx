@@ -26,7 +26,7 @@ const signInSchema = z.object({
   password: z.string().min(8, { message: 'Mínimo 6 caracteres' }),
 });
 
-export function SignInForm() {
+export function SignInView() {
   const [errorMessage, setErrorMessage] = useState<null | string>(null);
   const [disabledButtons, setDisabledButtons] = useState<boolean>(false);
 
