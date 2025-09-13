@@ -1,5 +1,5 @@
 import {
-  CommandDialog,
+  CommandResponsiveDialog,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -15,7 +15,7 @@ interface DashboardCommandProps {
 
 export function DashboardCommand({ open, setOpen }: DashboardCommandProps) {
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Buscar una reunion o un agente" />
       <CommandList>
         <CommandGroup>
@@ -24,6 +24,6 @@ export function DashboardCommand({ open, setOpen }: DashboardCommandProps) {
           <CommandItem>Crear reporte</CommandItem>
         </CommandGroup>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   );
 }
