@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma';
-import { createTRPCRouter, baseProcedure, protectedProcedure } from '@/trpc/init';
+import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 import { agentsInsertSchema } from '../schemas';
 import z from 'zod';
 
 export const agentsRouter = createTRPCRouter({
-  getOne: baseProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
+  getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
     return await prisma.agents.findUnique({
       where: {
         id: input.id,
@@ -12,7 +12,7 @@ export const agentsRouter = createTRPCRouter({
     });
   }),
 
-  getMany: baseProcedure.query(async () => {
+  getMany: protectedProcedure.query(async () => {
     return await prisma.agents.findMany();
   }),
   create: protectedProcedure.input(agentsInsertSchema).mutation(async ({ input, ctx }) => {
