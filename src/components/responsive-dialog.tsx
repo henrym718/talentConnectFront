@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { Children, Dispatch, SetStateAction } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from './ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -8,7 +8,7 @@ interface Props {
   descriptiom: string;
   children: React.ReactNode;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
 }
 
 export function ResponsiveDialog({ title, descriptiom, open, onOpenChange, children }: Props) {

@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 
 const signUpSchema = z.object({
   name: z.string().min(2, { message: 'Nombre muy corto' }),
-  email: z.string().email({ message: 'Correo inválido' }),
+  email: z.email({ message: 'Correo inválido' }),
   password: z.string().min(8, { message: 'Mínimo 6 caracteres' }),
 });
 
