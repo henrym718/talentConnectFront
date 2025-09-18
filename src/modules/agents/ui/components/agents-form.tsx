@@ -1,7 +1,7 @@
 'use client';
 
 import { useTRPC } from '@/trpc/client';
-import { AgentGetOne } from '../../types/types';
+import { AgentGetOne } from '../../types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import z from 'zod';
